@@ -162,25 +162,27 @@ finally:
 
 #https://stepik.org/lesson/138920/step/8?unit=196194
 from selenium import webdriver
-from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
 import time
 
 try:
-    d = DesiredCapabilities.CHROME
-    d['loggingPrefs'] = {'browser': 'ALL'}
-    browser = webdriver.Chrome(desired_capabilities=d)
+    browser = webdriver.Chrome()
     browser.get("http://suninjuly.github.io/find_xpath_form")
 
-    for entry in browser.get_log('browser'):
-        print(entry)
+    input1 = browser.find_element_by_tag_name("input")
+    input1.send_keys("Ivan")
+    input2 = browser.find_element_by_name("last_name")
+    input2.send_keys("Petrov")
+    input3 = browser.find_element_by_class_name("city")
+    input3.send_keys("Smolensk")
+    input4 = browser.find_element_by_id("country")
+    input4.send_keys("Russia")
+
     #element = browser.find_element_by_xpath("//div[@class = 'btn' and button[text() = 'Submit']]").click()
-    element = browser.find_element_by_xpath("//button[@class = 'btn' and contains(text(),'Submit')]")
-    print( browser.find_element_by_xpath("//button[@class = 'btn' and contains(text(),'Submit')]").text)
+    element = browser.find_element_by_xpath('//button[text() = "Submit")]').click()
     #element = browser.find_element_by_xpath("//button[text() = 'Submit']").click()
 finally:
     # успеваем скопировать код за 30 секунд
     time.sleep(10)
     # закрываем браузер после всех манипуляций
     browser.quit()
-
 
