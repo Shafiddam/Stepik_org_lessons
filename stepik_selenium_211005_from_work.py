@@ -21,18 +21,6 @@ submit_button.click()
 
 
 
-'''
-textarea.send_keys("Эти слова я написал на Питоне в своей программе, запустил эту программу и она должна сама написать этот текст и нажать кнопку отправить ")
-time.sleep(1)
-# Найдем кнопку, которая отправляет введенное решение
-submit_button = driver.find_element_by_css_selector("._4sWnG")
-# Скажем драйверу, что нужно нажать на кнопку. После этой команды мы должны увидеть сообщение о правильном ответе
-submit_button.click()
-time.sleep(1)
-# После выполнения всех действий мы должны не забыть закрыть окно браузера
-#driver.quit()
-'''
-
 
 
 '''
@@ -160,7 +148,8 @@ finally:
 
 
 
-#https://stepik.org/lesson/138920/step/8?unit=196194
+'''
+# https://stepik.org/lesson/138920/step/8?unit=196194
 from selenium import webdriver
 import time
 
@@ -177,12 +166,94 @@ try:
     input4 = browser.find_element_by_id("country")
     input4.send_keys("Russia")
 
-    #element = browser.find_element_by_xpath("//div[@class = 'btn' and button[text() = 'Submit']]").click()
-    element = browser.find_element_by_xpath('//button[text() = "Submit")]').click()
-    #element = browser.find_element_by_xpath("//button[text() = 'Submit']").click()
+    element = browser.find_element_by_xpath("//button[@type = 'submit']").click()
+    
 finally:
     # успеваем скопировать код за 30 секунд
-    time.sleep(10)
+    time.sleep(3)
     # закрываем браузер после всех манипуляций
     browser.quit()
+'''
+
+
+
+
+
+
+
+'''
+# Уникальность селекторов: часть 2
+# https://stepik.org/lesson/138920/step/10?unit=196194
+
+from selenium import webdriver
+from time import sleep
+
+try:
+    link = "http://suninjuly.github.io/registration2.html"
+    browser = webdriver.Chrome()
+    browser.get(link)
+
+    # Ваш код, который заполняет обязательные поля
+    input1 = browser.find_element_by_xpath("//input[@placeholder = 'Input your first name']") # First name*
+    input1.send_keys("Ivan")
+    input2 = browser.find_element_by_xpath("//input[@placeholder = 'Input your last name']") # Last name*
+    input2.send_keys("Petrov")
+    input3 = browser.find_element_by_xpath("//input[@placeholder = 'Input your email']") # Email*
+    input3.send_keys("1@ya.ru")
+    sleep(3)
+
+    # Отправляем заполненную форму
+    button = browser.find_element_by_css_selector("button.btn")
+    button.click()
+
+
+    # Проверяем, что смогли зарегистрироваться
+    # ждем загрузки страницы
+    sleep(2)
+
+    # находим элемент, содержащий текст
+    welcome_text_elt = browser.find_element_by_tag_name("h1")
+    # записываем в переменную welcome_text текст из элемента welcome_text_elt
+    welcome_text = welcome_text_elt.text
+
+    # с помощью assert проверяем, что ожидаемый текст совпадает с текстом на странице сайта
+    assert "Congratulations! You have successfully registered!" == welcome_text
+
+finally:
+    # ожидание чтобы визуально оценить результаты прохождения скрипта
+    sleep(3)
+    # закрываем браузер после всех манипуляций
+    browser.quit()
+'''
+
+
+
+
+
+# Задание: кликаем по checkboxes и radiobuttons (капча для роботов)
+# https://stepik.org/lesson/165493/step/5
+
+from selenium import webdriver
+from time import sleep
+import math
+
+def calc(x):
+  return str(math.log(abs(12*math.sin(int(x)))))
+
+try:
+    link = "http://suninjuly.github.io/math.html"
+    browser = webdriver.Chrome()
+    browser.get(link)
+    x = browser.find_element_by_xpath("//div/label/span[@id = 'input_value']").text
+    y = calc(x)
+    browser.find_element_by_xpath("//[@id = answer']").send_keys(y)
+
+
+
+finally:
+    # ожидание чтобы визуально оценить результаты прохождения скрипта
+    sleep(3)
+    # закрываем браузер после всех манипуляций
+    browser.quit()
+
 
