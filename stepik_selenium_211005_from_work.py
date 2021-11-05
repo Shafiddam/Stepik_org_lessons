@@ -7,6 +7,7 @@ print(fun(5))
 
 
 
+
 '''import time
 from selenium import webdriver
 driver = webdriver.Chrome()
@@ -18,6 +19,8 @@ textarea = driver.find_element_by_css_selector("/Users/Account/LogOn?ReturnUrl=%
 #textarea = driver.find_element_by_css_selector(".textbox")
 submit_button.click()
 '''
+
+
 
 
 
@@ -39,6 +42,10 @@ finally:
 # закрываем браузер после всех манипуляций
     browser.quit()
 '''
+
+
+
+
 
 
 
@@ -74,6 +81,7 @@ finally:
 
 # не забываем оставить пустую строку в конце файла (для линукса)
 '''
+
 
 
 
@@ -118,6 +126,9 @@ time.sleep(30)
 
 
 
+
+
+
 '''
 #https://stepik.org/lesson/138920/step/7?unit=196194
 from selenium import webdriver
@@ -148,6 +159,7 @@ finally:
 
 
 
+
 '''
 # https://stepik.org/lesson/138920/step/8?unit=196194
 from selenium import webdriver
@@ -167,7 +179,7 @@ try:
     input4.send_keys("Russia")
 
     element = browser.find_element_by_xpath("//button[@type = 'submit']").click()
-    
+
 finally:
     # успеваем скопировать код за 30 секунд
     time.sleep(3)
@@ -181,18 +193,21 @@ finally:
 
 
 
+
+
+
+
+
 '''
+# 2.1 Основные методы Selenium
 # Уникальность селекторов: часть 2
 # https://stepik.org/lesson/138920/step/10?unit=196194
-
 from selenium import webdriver
 from time import sleep
-
 try:
     link = "http://suninjuly.github.io/registration2.html"
     browser = webdriver.Chrome()
     browser.get(link)
-
     # Ваш код, который заполняет обязательные поля
     input1 = browser.find_element_by_xpath("//input[@placeholder = 'Input your first name']") # First name*
     input1.send_keys("Ivan")
@@ -201,24 +216,18 @@ try:
     input3 = browser.find_element_by_xpath("//input[@placeholder = 'Input your email']") # Email*
     input3.send_keys("1@ya.ru")
     sleep(3)
-
     # Отправляем заполненную форму
     button = browser.find_element_by_css_selector("button.btn")
     button.click()
-
-
     # Проверяем, что смогли зарегистрироваться
     # ждем загрузки страницы
     sleep(2)
-
     # находим элемент, содержащий текст
     welcome_text_elt = browser.find_element_by_tag_name("h1")
     # записываем в переменную welcome_text текст из элемента welcome_text_elt
     welcome_text = welcome_text_elt.text
-
     # с помощью assert проверяем, что ожидаемый текст совпадает с текстом на странице сайта
     assert "Congratulations! You have successfully registered!" == welcome_text
-
 finally:
     # ожидание чтобы визуально оценить результаты прохождения скрипта
     sleep(3)
@@ -230,30 +239,176 @@ finally:
 
 
 
+
+'''
+# 2.1 Основные методы Selenium
 # Задание: кликаем по checkboxes и radiobuttons (капча для роботов)
 # https://stepik.org/lesson/165493/step/5
+# Ваша программа должна выполнить следующие шаги:
+# Открыть страницу http://suninjuly.github.io/math.html.
+# Считать значение для переменной x.
+# Посчитать математическую функцию от x (код для этого приведён ниже).
+# Ввести ответ в текстовое поле.
+# Отметить checkbox "I'm the robot".
+# Выбрать radiobutton "Robots rule!".
+# Нажать на кнопку Submit.
 
 from selenium import webdriver
 from time import sleep
-import math
+from math import log, sin
 
 def calc(x):
-  return str(math.log(abs(12*math.sin(int(x)))))
+  return str(log(abs(12*sin(int(x)))))
 
 try:
     link = "http://suninjuly.github.io/math.html"
     browser = webdriver.Chrome()
     browser.get(link)
-    x = browser.find_element_by_xpath("//div/label/span[@id = 'input_value']").text
+    x = browser.find_element_by_id('input_value').text
     y = calc(x)
-    browser.find_element_by_xpath("//[@id = answer']").send_keys(y)
-
-
+    browser.find_element_by_id('answer').send_keys(y)
+    robotCheckbox = browser.find_element_by_css_selector("[for = 'robotCheckbox']").click()
+    robotsRule = browser.find_element_by_css_selector("[for='robotsRule']").click()
+    button = browser.find_element_by_css_selector("button.btn").click()
 
 finally:
     # ожидание чтобы визуально оценить результаты прохождения скрипта
-    sleep(3)
+    sleep(5)
     # закрываем браузер после всех манипуляций
     browser.quit()
+'''
+
+
+
+
+
+
+
+
+'''
+# 2.1 Основные методы Selenium
+# https://stepik.org/lesson/165493/step/7?unit=140087
+# Задание: поиск сокровища с помощью get_attribute
+# В данной задаче вам нужно с помощью роботов решить ту же математическую задачу,
+# как и в прошлом задании. Но теперь значение переменной х спрятано в "сундуке",
+# точнее, значение хранится в атрибуте valuex у картинки с изображением сундука.
+# Открыть страницу http://suninjuly.github.io/get_attribute.html.
+# Найти на ней элемент-картинку, который является изображением сундука с сокровищами.
+# Взять у этого элемента значение атрибута valuex, которое является значением x для задачи.
+# Посчитать математическую функцию от x (сама функция остаётся неизменной).
+# Ввести ответ в текстовое поле.
+# Отметить checkbox "I'm the robot".
+# Выбрать radiobutton "Robots rule!".
+# Нажать на кнопку "Submit".
+# Для вычисления значения выражения в п.4 используйте функцию calc(x) из предыдущей задачи.
+
+from selenium import webdriver
+from time import sleep
+from math import log, sin
+
+def calc(x):
+  return str(log(abs(12*sin(int(x)))))
+
+try:
+    link = "http://suninjuly.github.io/get_attribute.html"
+    browser = webdriver.Chrome()
+    browser.get(link)
+    #x = browser.find_element_by_xpath("//div/label/span[@id = 'input_value']").text
+    x = browser.find_element_by_id('treasure').get_attribute('valuex')
+    y = calc(x)
+    browser.find_element_by_id('answer').send_keys(y)
+    robotCheckbox = browser.find_element_by_id('robotCheckbox').click()
+    robotsRule = browser.find_element_by_id('robotsRule').click()
+    button = browser.find_element_by_css_selector("button.btn").click()
+
+finally:
+    # ожидание чтобы визуально оценить результаты прохождения скрипта
+    sleep(6)
+    # закрываем браузер после всех манипуляций
+    browser.quit()
+'''
+
+
+
+
+
+
+
+
+
+
+
+
+
+'''
+# Работа с файлами, списками и js-скриптами
+# https://stepik.org/lesson/228249/step/6?unit=200781
+# Задание на execute_script
+# В данной задаче вам нужно будет снова преодолеть капчу для роботов и справиться
+# с ужасным и огромным футером, который дизайнер всё никак не успевает переделать.
+# Вам потребуется написать код, чтобы:
+# Открыть страницу http://SunInJuly.github.io/execute_script.html.
+# Считать значение для переменной x.
+# Посчитать математическую функцию от x.
+# Проскроллить страницу вниз.
+# Ввести ответ в текстовое поле.
+# Выбрать checkbox "I'm the robot".
+# Переключить radiobutton "Robots rule!".
+# Нажать на кнопку "Submit".
+# Если все сделано правильно и достаточно быстро (в этой задаче тоже есть ограничение
+# по времени), вы увидите окно с числом. Отправьте полученное число в качестве
+# ответа для этого задания. Для этой задачи вам понадобится использовать метод
+# execute_script, чтобы сделать прокрутку в область видимости элементов, перекрытых футером.
+
+from selenium import webdriver
+from selenium.webdriver.common.by import By
+from selenium.webdriver.common.keys import Keys
+from time import sleep
+from selenium.webdriver.support.ui import Select
+from math import log, sin
+
+try:
+    # Открыть страницу:
+    link = "http://SunInJuly.github.io/execute_script.html"
+    browser = webdriver.Chrome()
+    browser.get(link)
+    
+    # Считать значение для переменной x:
+    x = browser.find_element_by_id('input_value').text
+
+    # Посчитать математическую функцию от x:
+    y = log(abs(12*sin(int(x))))
+
+    # Ввести ответ в текстовое поле:
+    input = browser.find_element_by_id('answer').send_keys(y)
+    
+    # Проскроллить страницу вниз:
+    button = browser.find_element_by_tag_name("button")
+    browser.execute_script("return arguments[0].scrollIntoView(true);", button)
+    button.click()
+    
+    robotCheckbox = browser.find_element_by_id('robotCheckbox').click()
+    robotsRule = browser.find_element_by_id('robotsRule').click()
+    button = browser.find_element_by_css_selector("button.btn").click()
+    
+finally:
+    # ожидание чтобы визуально оценить результаты прохождения скрипта
+    sleep(5)
+    # закрываем браузер после всех манипуляций
+    browser.quit()
+'''
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
