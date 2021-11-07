@@ -202,12 +202,15 @@ finally:
 # 2.1 Основные методы Selenium
 # Уникальность селекторов: часть 2
 # https://stepik.org/lesson/138920/step/10?unit=196194
+
 from selenium import webdriver
 from time import sleep
+
 try:
     link = "http://suninjuly.github.io/registration2.html"
     browser = webdriver.Chrome()
     browser.get(link)
+    
     # Ваш код, который заполняет обязательные поля
     input1 = browser.find_element_by_xpath("//input[@placeholder = 'Input your first name']") # First name*
     input1.send_keys("Ivan")
@@ -216,9 +219,11 @@ try:
     input3 = browser.find_element_by_xpath("//input[@placeholder = 'Input your email']") # Email*
     input3.send_keys("1@ya.ru")
     sleep(3)
+    
     # Отправляем заполненную форму
     button = browser.find_element_by_css_selector("button.btn")
     button.click()
+    
     # Проверяем, что смогли зарегистрироваться
     # ждем загрузки страницы
     sleep(2)
@@ -228,12 +233,18 @@ try:
     welcome_text = welcome_text_elt.text
     # с помощью assert проверяем, что ожидаемый текст совпадает с текстом на странице сайта
     assert "Congratulations! You have successfully registered!" == welcome_text
+    
 finally:
     # ожидание чтобы визуально оценить результаты прохождения скрипта
     sleep(3)
     # закрываем браузер после всех манипуляций
     browser.quit()
+    
 '''
+
+
+
+
 
 
 
@@ -276,7 +287,9 @@ finally:
     sleep(5)
     # закрываем браузер после всех манипуляций
     browser.quit()
+    
 '''
+
 
 
 
@@ -326,6 +339,7 @@ finally:
     sleep(6)
     # закрываем браузер после всех манипуляций
     browser.quit()
+    
 '''
 
 
@@ -343,6 +357,7 @@ finally:
 '''
 # Работа с файлами, списками и js-скриптами
 # https://stepik.org/lesson/228249/step/6?unit=200781
+
 # Задание на execute_script
 # В данной задаче вам нужно будет снова преодолеть капчу для роботов и справиться
 # с ужасным и огромным футером, который дизайнер всё никак не успевает переделать.
@@ -396,6 +411,76 @@ finally:
     sleep(5)
     # закрываем браузер после всех манипуляций
     browser.quit()
+    
+'''
+
+
+
+
+
+
+
+
+
+
+'''
+
+# 2.2 Работа с файлами, списками и js-скриптами
+# https://stepik.org/lesson/228249/step/8?unit=200781
+
+# Задание: загрузка файла
+# В этом задании в форме регистрации требуется загрузить текстовый файл.
+# Напишите скрипт, который будет выполнять следующий сценарий:
+# Открыть страницу http://suninjuly.github.io/file_input.html
+# Заполнить текстовые поля: имя, фамилия, email
+# Загрузить файл. Файл должен иметь расширение .txt и может быть пустым
+# Нажать кнопку "Submit"
+# Если все сделано правильно и быстро, вы увидите окно с числом.
+# Отправьте полученное число в качестве ответа для этого задания.
+
+from selenium import webdriver
+from time import sleep
+import os
+
+# Создадим файл example.txt в текущей папке (там же где лежит этот код)
+with open("example.txt", "w") as file:
+    file.write("бла-бла-бла))")
+
+try:
+    # Открыть страницу:
+    link = "http://suninjuly.github.io/file_input.html"
+    browser = webdriver.Chrome()
+    browser.get(link)
+
+    # Ваш код, который заполняет обязательные поля
+    input1 = browser.find_element_by_xpath("//input[@placeholder = 'Enter first name']") # First name*
+    input1.send_keys("Ivan")
+    input2 = browser.find_element_by_xpath("//input[@placeholder = 'Enter last name']") # Last name*
+    input2.send_keys("Petrov")
+    input3 = browser.find_element_by_xpath("//input[@placeholder = 'Enter email']") # Email*
+    input3.send_keys("1@ya.ru")
+
+    # получаем путь к директории текущего исполняемого файла
+    current_dir = os.path.abspath(os.path.dirname(__file__))
+    print(current_dir)      # просто проверка)
+
+    # добавляем к этому пути имя файла
+    file_path = os.path.join(current_dir, 'example.txt')
+    print(file_path)        # просто проверка)
+
+    # Загрузить файл. Файл должен иметь расширение .txt и может быть пустым
+    browser.find_element_by_id("file").send_keys(file_path)
+
+    button = browser.find_element_by_css_selector("button.btn").click()
+
+finally:
+    # ожидание чтобы визуально оценить результаты прохождения скрипта
+    sleep(5)
+    # закрываем браузер после всех манипуляций
+    browser.quit()
+
+os.remove(file_path)            # удаляем созданный файл
+
 '''
 
 
@@ -408,7 +493,192 @@ finally:
 
 
 
+'''
+
+# 2.3 Работа с окнами
+# https://stepik.org/lesson/184253/step/4
+
+# Задание: принимаем alert
+# Hаписать программу, которая будет выполнять следующий сценарий:
+# Открыть страницу http://suninjuly.github.io/alert_accept.html
+# Нажать на кнопку
+# Принять confirm
+# На новой странице решить капчу для роботов, чтобы получить число с ответом
+# Если все сделано правильно и достаточно быстро вы увидите окно с числом.
+# Отправьте полученное число в качестве ответа на это задание.
+
+from selenium import webdriver
+from time import sleep
+from math import log, sin
+
+try:
+    # Открыть страницу:
+    link = "http://suninjuly.github.io/alert_accept.html"
+    browser = webdriver.Chrome()
+    browser.get(link)
+
+    button = browser.find_element_by_css_selector("button.btn").click()
+
+    confirm = browser.switch_to.alert
+    confirm.accept()
+    sleep(2)
+
+    # Считать значение для переменной x:
+    x = browser.find_element_by_id('input_value').text
+
+    # Посчитать математическую функцию от x:
+    y = log(abs(12*sin(int(x))))
+
+    # Ввести ответ в текстовое поле:
+    input = browser.find_element_by_id('answer').send_keys(y)
+
+    button = browser.find_element_by_css_selector("button.btn").click()
+
+
+finally:
+    # ожидание чтобы визуально оценить результаты прохождения скрипта
+    sleep(5)
+    # закрываем браузер после всех манипуляций
+    browser.quit()
+
+'''
 
 
 
 
+
+
+
+
+
+
+
+'''
+
+# 2.3 Работа с окнами
+# https://stepik.org/lesson/184253/step/6
+
+# Задание: переход на новую вкладку
+# В этом задании после нажатия кнопки страница откроется в новой вкладке,
+# нужно переключить WebDriver на новую вкладку и решить в ней задачу.
+# Сценарий для реализации выглядит так:
+# Открыть страницу http://suninjuly.github.io/redirect_accept.html
+# Нажать на кнопку
+# Переключиться на новую вкладку
+# Пройти капчу для робота и получить число-ответ
+# Если все сделано правильно и достаточно быстро, вы увидите окно с числом.
+# Отправьте полученное число в качестве ответа на это задание.
+
+from selenium import webdriver
+from time import sleep
+from math import log, sin
+
+try:
+    # Открыть страницу:
+    link = "http://suninjuly.github.io/redirect_accept.html"
+    browser = webdriver.Chrome()
+    browser.get(link)
+
+    button = browser.find_element_by_css_selector("button.btn").click()
+
+    browser.switch_to.window(browser.window_handles[1])
+
+    # Считать значение для переменной x:
+    x = browser.find_element_by_id('input_value').text
+
+    # Посчитать математическую функцию от x:
+    y = log(abs(12*sin(int(x))))
+
+    # Ввести ответ в текстовое поле:
+    input = browser.find_element_by_id('answer').send_keys(y)
+
+    button = browser.find_element_by_css_selector("button.btn").click()
+
+finally:
+    # ожидание чтобы визуально оценить результаты прохождения скрипта
+    sleep(5)
+    # закрываем браузер после всех манипуляций
+    browser.quit()
+
+'''
+
+
+
+
+
+
+
+
+
+
+
+# 2.4 Настройка ожиданий
+# https://stepik.org/lesson/181384/step/8
+
+# Задание: ждем нужный текст на странице
+# Попробуем теперь написать программу, которая будет бронировать нам дом
+# для отдыха по строго заданной цене. Более высокая цена нас не устраивает,
+# а по более низкой цене объект успеет забронировать кто-то другой.
+# В этой задаче вам нужно написать программу, которая будет выполнять следующий сценарий:
+
+# Открыть страницу http://suninjuly.github.io/explicit_wait2.html
+# Дождаться, когда цена дома уменьшится до $100 (ожидание нужно установить не меньше 12 секунд)
+# Нажать на кнопку "Book"
+# Решить уже известную нам математическую задачу (ранее написанный код) и отправить решение
+# Чтобы определить момент, когда цена аренды уменьшится до $100, используйте метод
+# text_to_be_present_in_element из библиотеки expected_conditions.
+# Если все сделано правильно и быстро, то вы увидите окно с числом.
+# Отправьте его в качестве ответа на это задание.
+
+from selenium import webdriver
+from time import sleep
+from math import log, sin
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
+
+try:
+    # Открыть страницу:
+    link = "http://suninjuly.github.io/explicit_wait2.html"
+    browser = webdriver.Chrome()
+    browser.get(link)
+    # говорим WebDriver ждать все элементы в течение 12 секунд
+    browser.implicitly_wait(12)
+
+    price = browser.find_element_by_id("price").text
+    print(price)
+
+
+finally:
+    # ожидание чтобы визуально оценить результаты прохождения скрипта
+    sleep(5)
+    # закрываем браузер после всех манипуляций
+    browser.quit()
+
+
+
+'''
+    if price == '$100':
+        browser.find_element_by_css_selector("button.btn").click()
+
+    # Считать значение для переменной x:
+    x = browser.find_element_by_id('input_value').text
+
+    # Посчитать математическую функцию от x:
+    y = log(abs(12*sin(int(x))))
+
+    # Ввести ответ в текстовое поле:
+    input = browser.find_element_by_id('answer').send_keys(y)
+
+    button = browser.find_element_by_css_selector("button.btn").click()
+
+    # Считать значение для переменной x:
+    x = browser.find_element_by_id('input_value').text
+
+    # Посчитать математическую функцию от x:
+    y = log(abs(12 * sin(int(x))))
+
+    # Ввести ответ в текстовое поле:
+    input = browser.find_element_by_id('answer').send_keys(y)
+
+    button = browser.find_element_by_css_selector("button.btn").click()
+'''
