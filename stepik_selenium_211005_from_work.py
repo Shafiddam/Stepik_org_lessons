@@ -656,9 +656,53 @@ finally:
 
 
 
+    
+    
+    
+    
+    
+   
+
 '''
-    if price == '$100':
-        browser.find_element_by_css_selector("button.btn").click()
+# 2.4 Настройка ожиданий
+# https://stepik.org/lesson/181384/step/8
+
+# Задание: ждем нужный текст на странице
+# Попробуем теперь написать программу, которая будет бронировать нам дом
+# для отдыха по строго заданной цене. Более высокая цена нас не устраивает,
+# а по более низкой цене объект успеет забронировать кто-то другой.
+# В этой задаче вам нужно написать программу, которая будет выполнять следующий сценарий:
+
+# Открыть страницу http://suninjuly.github.io/explicit_wait2.html
+# Дождаться, когда цена дома уменьшится до $100 (ожидание нужно установить не меньше 12 секунд)
+# Нажать на кнопку "Book"
+# Решить уже известную нам математическую задачу (ранее написанный код) и отправить решение
+# Чтобы определить момент, когда цена аренды уменьшится до $100, используйте метод
+# text_to_be_present_in_element из библиотеки expected_conditions.
+# Если все сделано правильно и быстро, то вы увидите окно с числом.
+# Отправьте его в качестве ответа на это задание.
+
+from selenium import webdriver
+from time import sleep
+from math import log, sin
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+
+try:
+    # Открыть страницу:
+    link = "http://suninjuly.github.io/explicit_wait2.html"
+    browser = webdriver.Chrome()
+    browser.get(link)
+
+    # говорим WebDriver ждать ВСЕ элементы в течение 12 секунд
+    #browser.implicitly_wait(12)
+    # Implicit wait (неявное ожидание) - его не надо явно указывать каждый раз, используется для ожидания прогрузки страницы.
+    # Explicit Waits (явное ожидание) - позволяют задать специальное ожидание для конкретного элемента (см.ниже ждем когда цена станет равна $100.
+    # Например, кнопка стала кликабельной или кнопка становится неактивной после отправки данных.
+    price = WebDriverWait(browser, 12).until(EC.text_to_be_present_in_element((By.ID, 'price'), '$100'))
+
+    browser.find_element_by_css_selector("button.btn").click()
 
     # Считать значение для переменной x:
     x = browser.find_element_by_id('input_value').text
@@ -667,18 +711,22 @@ finally:
     y = log(abs(12*sin(int(x))))
 
     # Ввести ответ в текстовое поле:
-    input = browser.find_element_by_id('answer').send_keys(y)
+    input = browser.find_element_by_id('answer').send_keys(str(y))  #не забыв перевести число в строку, чтобы передать в keys
 
-    button = browser.find_element_by_css_selector("button.btn").click()
+    button = browser.find_element_by_id("solve").click() 
+    # здесь css_selector("button.btn") не работает, потому что у нас уже вторая кнопка с таким "тег.класс"
+    # поэтому ищем по "id"
 
-    # Считать значение для переменной x:
-    x = browser.find_element_by_id('input_value').text
-
-    # Посчитать математическую функцию от x:
-    y = log(abs(12 * sin(int(x))))
-
-    # Ввести ответ в текстовое поле:
-    input = browser.find_element_by_id('answer').send_keys(y)
-
-    button = browser.find_element_by_css_selector("button.btn").click()
+finally:
+    # ожидание чтобы визуально оценить результаты прохождения скрипта и скопировать полученный результат в буфер обмена
+    sleep(6)
+    # закрываем браузер после всех манипуляций
+    browser.quit()
 '''
+
+
+
+
+
+
+
