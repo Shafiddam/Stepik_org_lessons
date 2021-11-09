@@ -599,7 +599,6 @@ finally:
     sleep(5)
     # закрываем браузер после всех манипуляций
     browser.quit()
-
 '''
 
 
@@ -611,57 +610,6 @@ finally:
 
 
 
-
-# 2.4 Настройка ожиданий
-# https://stepik.org/lesson/181384/step/8
-
-# Задание: ждем нужный текст на странице
-# Попробуем теперь написать программу, которая будет бронировать нам дом
-# для отдыха по строго заданной цене. Более высокая цена нас не устраивает,
-# а по более низкой цене объект успеет забронировать кто-то другой.
-# В этой задаче вам нужно написать программу, которая будет выполнять следующий сценарий:
-
-# Открыть страницу http://suninjuly.github.io/explicit_wait2.html
-# Дождаться, когда цена дома уменьшится до $100 (ожидание нужно установить не меньше 12 секунд)
-# Нажать на кнопку "Book"
-# Решить уже известную нам математическую задачу (ранее написанный код) и отправить решение
-# Чтобы определить момент, когда цена аренды уменьшится до $100, используйте метод
-# text_to_be_present_in_element из библиотеки expected_conditions.
-# Если все сделано правильно и быстро, то вы увидите окно с числом.
-# Отправьте его в качестве ответа на это задание.
-
-from selenium import webdriver
-from time import sleep
-from math import log, sin
-from selenium.webdriver.common.by import By
-from selenium.webdriver.support.ui import WebDriverWait
-
-try:
-    # Открыть страницу:
-    link = "http://suninjuly.github.io/explicit_wait2.html"
-    browser = webdriver.Chrome()
-    browser.get(link)
-    # говорим WebDriver ждать все элементы в течение 12 секунд
-    browser.implicitly_wait(12)
-
-    price = browser.find_element_by_id("price").text
-    print(price)
-
-
-finally:
-    # ожидание чтобы визуально оценить результаты прохождения скрипта
-    sleep(5)
-    # закрываем браузер после всех манипуляций
-    browser.quit()
-
-
-
-    
-    
-    
-    
-    
-   
 
 '''
 # 2.4 Настройка ожиданий
@@ -723,6 +671,56 @@ finally:
     # закрываем браузер после всех манипуляций
     browser.quit()
 '''
+
+
+
+
+
+
+
+
+
+
+
+
+
+'''
+# Самостоятельное задание - залогиниться, перейти на урок и нажать радиобаттон 
+
+from selenium import webdriver
+from time import sleep
+from selenium.webdriver.common.by import By
+
+mail = 'ccccccc@mail.ru'
+password = 'cccccccc'
+
+try:
+    # Открыть страницу:
+    link = "https://stepik.org"
+    #link_lesson = "https://stepik.org/lesson/236205/step/3?unit=208637"
+    link_lesson = "https://stepik.org/lesson/236205/step/3"
+    browser = webdriver.Firefox()    # .Chrome()
+    browser.get(link)
+
+    browser.find_element_by_link_text ("Войти").click()  #войти
+
+    input1 = browser.find_element_by_id('id_login_email').send_keys(mail)
+    input2 = browser.find_element_by_id('id_login_password').send_keys(password)  #нужен реальный пароль
+    browser.find_element_by_css_selector("button.sign-form__btn").click()  #полный класс: sign-form__btn button_with-loader
+    browser.get(link_lesson)
+
+    browser.find_element_by_css_selector("browser.switch_to.alert").click()
+
+finally:
+    # ожидание чтобы визуально оценить результаты прохождения скрипта и скопировать полученный результат в буфер обмена
+    sleep(10)
+    # закрываем браузер после всех манипуляций
+    browser.quit()
+'''
+
+
+
+
 
 
 
